@@ -1,0 +1,54 @@
+.iso {
+  --cpb-lcd: #0f1a14;
+  --cpb-digit: #7be0a6;
+  --cpb-venous: #5a1f2c;
+  --cpb-venous-shine: #7a3040;
+  --cpb-venous-shade: #3a1019;
+  --cpb-arterial: #a3242c;
+  --cpb-arterial-shine: #d0464c;
+  --cpb-arterial-shade: #6e1219;
+}
+.iso[data-theme="light"] {
+  --cpb-lcd: #e3ebe5;
+  --cpb-digit: #1d5c3a;
+  --cpb-venous: #7d2a3b;
+  --cpb-venous-shine: #a4485a;
+  --cpb-venous-shade: #5c1828;
+  --cpb-arterial: #c8323a;
+  --cpb-arterial-shine: #e6656b;
+  --cpb-arterial-shade: #9a1d26;
+}
+.cpb-lcd { fill: var(--cpb-lcd); stroke: none; }
+.cpb-digit { fill: var(--cpb-digit); font-family: var(--anatomy-mono); font-variant-numeric: tabular-nums; }
+.cpb-v .tb-body { fill: var(--cpb-venous); }
+.cpb-v .tb-shine { fill: var(--cpb-venous-shine); }
+.cpb-v .tb-shade { fill: var(--cpb-venous-shade); }
+.cpb-a .tb-body { fill: var(--cpb-arterial); }
+.cpb-a .tb-shine { fill: var(--cpb-arterial-shine); }
+.cpb-a .tb-shade { fill: var(--cpb-arterial-shade); }
+.cpb-stage { position: relative; touch-action: pan-y; user-select: none; -webkit-user-select: none; outline: none; }
+.cpb-stage:focus-visible { outline: 1px solid var(--anatomy-muted); outline-offset: 6px; }
+.iso-plate { padding: 52px 24px 64px; overflow: hidden; }
+.cpb-blood > .iso-fill, .cpb-blood > .iso-top { fill: var(--cpb-venous-shine); }
+.cpb-blood > .iso-shade { fill: var(--cpb-venous); }
+.cpb-blood > .iso-shade[data-shade="0"] { fill: var(--cpb-venous-shade); }
+.cpb-lumen { fill: var(--anatomy-shade-0); stroke: none; }
+.cpb-swatch-v path { stroke: var(--cpb-venous); stroke-width: 3; }
+.cpb-swatch-a path { stroke: var(--cpb-arterial); stroke-width: 3; }
+.cpb-head { margin: 0 0 8px; }
+.cpb-head h1 { margin: 0 0 6px; font-size: 22px; line-height: 1.3; color: var(--anatomy-strong); font-weight: 600; letter-spacing: .01em; }
+.cpb-head p { margin: 0; color: var(--anatomy-text); font-size: 14px; line-height: 1.7; max-width: 60em; }
+@media (max-width: 560px) {
+  .cpb-stage { overflow: hidden; }
+  .iso-plate .cpb-stage svg.iso-svg { width: 118%; margin: -4% -3% -3% -15%; }
+}
+.iso { --cpb-cp: #3d6fb0; --cpb-cp-shine: #5a8ad0; --cpb-cp-shade: #284d80; }
+.iso[data-theme="light"] { --cpb-cp: #4a7fc4; --cpb-cp-shine: #79a3dc; --cpb-cp-shade: #335f99; }
+.cpb-c .tb-body { fill: var(--cpb-cp); }
+.cpb-c .tb-shine { fill: var(--cpb-cp-shine); }
+.cpb-c .tb-shade { fill: var(--cpb-cp-shade); }
+.cpb-swatch-c path { stroke: var(--cpb-cp); stroke-width: 3; }
+.cpb-stage [data-pump]:not([data-pump="arterial"]) { cursor: pointer; }
+.cpb-back { margin: 0 0 10px !important; font-size: 13px !important; }
+.cpb-back a { color: var(--anatomy-muted); text-decoration: none; }
+.cpb-back a:hover { text-decoration: underline; }

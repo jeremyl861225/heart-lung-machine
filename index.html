@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>人工心肺機互動圖</title>
+<meta name="description" content="體外循環 (cardiopulmonary bypass) 人工心肺機的等角互動圖：基本四泵配置與進階配置，標出每條管路的插管位置。">
+<style>
+:root {
+  color-scheme: light dark;
+  --page: #f2f2ef;
+  --card: #fbfbfa;
+  --text: #57575a;
+  --strong: #18181a;
+  --muted: #8c8c90;
+  --line: #dcdcd9;
+  --accent: #c8323a;
+  --venous: #7d2a3b;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0b0b0b;
+    --card: #131313;
+    --text: #a3a3a3;
+    --strong: #e6e6e6;
+    --muted: #6e6e6e;
+    --line: #2a2a2a;
+    --accent: #e0646b;
+    --venous: #a4485a;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0b0b0b;
+  --card: #131313;
+  --text: #a3a3a3;
+  --strong: #e6e6e6;
+  --muted: #6e6e6e;
+  --line: #2a2a2a;
+  --accent: #e0646b;
+  --venous: #a4485a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text);
+  font: 15px/1.7 ui-sans-serif, system-ui, -apple-system, "PingFang TC", "Noto Sans TC", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+main { max-width: 1040px; margin: 0 auto; padding: 48px 24px 64px; }
+.eyebrow { font: 12px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+h1 { margin: 0 0 12px; color: var(--strong); font-size: 28px; line-height: 1.3; font-weight: 650; letter-spacing: .01em; }
+.lead { margin: 0 0 36px; max-width: 46em; }
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  box-shadow: 0 0 0 1px var(--line);
+  color: inherit;
+  text-decoration: none;
+  transition: box-shadow .2s;
+}
+.card:hover, .card:focus-visible { box-shadow: 0 0 0 1px var(--muted); outline: none; }
+.card picture, .card img { display: block; width: 100%; height: auto; aspect-ratio: 1000 / 969; object-fit: cover; }
+.card img { border-bottom: 1px solid var(--line); background: var(--card); }
+.card-body { padding: 18px 20px 22px; }
+.card .fig { font: 12px/1.4 var(--mono); color: var(--muted); margin: 0 0 6px; letter-spacing: .06em; }
+.card h2 { margin: 0 0 8px; color: var(--strong); font-size: 19px; line-height: 1.35; font-weight: 600; }
+.card p { margin: 0 0 10px; }
+.card ul { margin: 0; padding-left: 1.2em; }
+.card li { margin: 2px 0; }
+.open { display: inline-block; margin-top: 14px; font: 13px/1.4 var(--mono); color: var(--strong); }
+h3 { margin: 48px 0 12px; color: var(--strong); font-size: 18px; font-weight: 600; }
+.table-wrap { overflow-x: auto; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+thead th { color: var(--strong); font-weight: 600; font-size: 13px; }
+tbody th { color: var(--strong); font-weight: 500; white-space: nowrap; }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+.en { color: var(--muted); font-size: 12.5px; }
+.note { margin-top: 40px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+.note a { color: inherit; }
+@media (max-width: 720px) {
+  main { padding: 32px 16px 48px; }
+  h1 { font-size: 23px; }
+  .cards { grid-template-columns: 1fr; }
+}
+</style>
+<script>try{const m=matchMedia("(prefers-color-scheme: dark)");const t=()=>{document.documentElement.dataset.theme=m.matches?"dark":"light"};t();m.addEventListener("change",t)}catch(e){}</script>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Heart-lung machine · cardiopulmonary bypass</p>
+  <h1>人工心肺機互動圖</h1>
+  <p class="lead">兩張可以操作的等角剖析圖，說明體外循環 (cardiopulmonary bypass, CPB) 時每個泵管哪一條路，以及每條管路接在病人身上的位置。圖上不畫心臟，改由右側的插管位置標示板 (cannulation sites) 標出每條管路的去處。每台泵的轉速、流量與儲血槽液面都由同一個模型算出，可以拖曳或用鍵盤操作，也會自動播放導覽。</p>
+
+  <div class="cards">
+    <a class="card" href="cpb-machine.html">
+      <picture>
+        <source srcset="assets/cpb-machine-dark.png" media="(prefers-color-scheme: dark)">
+        <img src="assets/cpb-machine.png" alt="基本四泵人工心肺機的等角圖：四個滾輪泵、儲血槽、氧合器與插管位置標示板" width="1000" height="969" loading="lazy">
+      </picture>
+      <div class="card-body">
+        <p class="fig">FIG 1 · 基本配置</p>
+        <h2>四個泵與插管位置</h2>
+        <p>四個滾輪泵 (roller pump) 各管一條路，五個插管位置。</p>
+        <ul>
+          <li>動脈泵 (arterial pump) → 升主動脈 (ascending aorta)</li>
+          <li>晶體心麻痺液 (crystalloid cardioplegia) → 主動脈根部 (aortic root)</li>
+          <li>左心減壓 (LV vent)：經右上肺靜脈 (RSPV) 進左心室</li>
+          <li>抽吸泵 (cardiotomy sucker)：心包腔 (pericardial field)</li>
+          <li>靜脈引流：右心房 (right atrium) → 儲血槽，靠重力</li>
+        </ul>
+        <span class="open">開啟互動圖 →</span>
+      </div>
+    </a>
+    <a class="card" href="cpb-advanced.html">
+      <picture>
+        <source srcset="assets/cpb-advanced-dark.png" media="(prefers-color-scheme: dark)">
+        <img src="assets/cpb-advanced.png" alt="進階人工心肺機的等角圖：離心泵、4:1 血液心麻痺液、雙腔靜脈插管、負壓引流與血液濃縮器" width="1000" height="969" loading="lazy">
+      </picture>
+      <div class="card-body">
+        <p class="fig">FIG 2 · 進階配置</p>
+        <h2>離心泵、4:1 血液心麻痺液與雙腔靜脈插管</h2>
+        <p>成人心臟手術常見的完整配置，八個插管位置。</p>
+        <ul>
+          <li>離心動脈泵 (centrifugal pump)：轉速太低時會逆流，示範先夾管</li>
+          <li>4:1 血液心麻痺液 (blood cardioplegia)：順行到主動脈根部，逆行到冠狀竇 (coronary sinus)</li>
+          <li>上下腔靜脈雙插管 (bicaval cannulation) 與 Y 接頭</li>
+          <li>負壓輔助靜脈引流 (vacuum-assisted venous drainage, VAVD)</li>
+          <li>主動脈根部減壓 (aortic root vent) 與血液濃縮器 (hemoconcentrator)</li>
+        </ul>
+        <span class="open">開啟互動圖 →</span>
+      </div>
+    </a>
+  </div>
+
+  <h3>兩種配置的差別</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th scope="col">項目</th><th scope="col">基本配置（Fig 1）</th><th scope="col">進階配置（Fig 2）</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">動脈泵<br><span class="en">Arterial pump</span></th><td>滾輪泵，壓閉式 (occlusive)：流量 = 每轉排出量 × 轉速</td><td>離心泵，非壓閉式 (non-occlusive)：流量取決於轉速與阻力；低轉速會逆流，需先夾管</td></tr>
+        <tr><th scope="row">心麻痺液<br><span class="en">Cardioplegia</span></th><td>晶體液 (crystalloid)，順行 (antegrade) 到主動脈根部</td><td>4:1 血液心麻痺液，同一泵頭的 1/4 吋與 1/8 吋兩條管；順行到主動脈根部，或逆行 (retrograde) 到冠狀竇</td></tr>
+        <tr><th scope="row">靜脈插管<br><span class="en">Venous cannulation</span></th><td>單支插管到右心房 (two-stage)</td><td>上腔靜脈 (SVC) 與下腔靜脈 (IVC) 各一支，Y 接頭會合</td></tr>
+        <tr><th scope="row">靜脈引流<br><span class="en">Venous drainage</span></th><td>重力 (gravity drainage)</td><td>重力加負壓輔助 (VAVD)，儲血槽蓋上有正負壓釋放閥</td></tr>
+        <tr><th scope="row">減壓與抽吸<br><span class="en">Vents and suckers</span></th><td>左心減壓、心包腔抽吸</td><td>左心減壓、主動脈根部減壓、心包腔抽吸</td></tr>
+        <tr><th scope="row">其他<br><span class="en">Other</span></th><td>—</td><td>血液濃縮器 (hemoconcentrator) 與濾液收集罐</td></tr>
+        <tr><th scope="row">插管位置<br><span class="en">Cannulation sites</span></th><td>5 個</td><td>8 個</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="note">教學用示意圖，不是臨床操作指引。流量、壓力與儲血槽液面都是簡化模型，各數值的來源與假設寫在每張圖下方的說明裡；實際設定依器材與各院體外循環常規。圖以 <a href="https://github.com/wheresryan22/anatomy">anatomy</a> 繪圖工具組（MIT 授權）製作，原始碼在 <code>src/</code>。</p>
+</main>
+</body>
+</html>

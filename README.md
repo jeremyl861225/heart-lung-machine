@@ -28,6 +28,28 @@ node src/cpb-advanced/build.mjs --audit   # 寫出 cpb-advanced.html
 
 `--audit` 會檢查零件沒有互相穿過、每條管路的兩端都接在接頭上、轉彎不會在畫面上摺疊、遮擋順序正確。每張圖的數字都來自同目錄的 `model.mjs`。
 
+## 桌布
+
+Fig 2 進階配置的靜止畫面：體外循環全流量運轉中（離心泵 2710 rpm、4.32 L/min，四個滾輪泵都在轉，負壓引流 −40 mmHg），所有管路以同亮度、同彩度的柔和配色上色，靜脈仍比動脈深。
+
+| 檔案 | 尺寸 | 用途 |
+|---|---|---|
+| [`wallpaper/cpb-phone-dark.png`](wallpaper/cpb-phone-dark.png) | 1206 × 2622 | iPhone 鎖定畫面，深色（上方留給時鐘） |
+| [`wallpaper/cpb-phone-light.png`](wallpaper/cpb-phone-light.png) | 1206 × 2622 | iPhone 鎖定畫面，淺色 |
+| [`wallpaper/cpb-desktop-dark.png`](wallpaper/cpb-desktop-dark.png) | 2880 × 1800 | Mac 桌面，深色 |
+| [`wallpaper/cpb-desktop-light.png`](wallpaper/cpb-desktop-light.png) | 2880 × 1800 | Mac 桌面，淺色 |
+
+重新產生：
+
+```sh
+node src/cpb-advanced/build.mjs --wallpaper           # wallpaper/wallpaper.html（深色）
+node src/cpb-advanced/build.mjs --wallpaper --light   # wallpaper/wallpaper-light.html（淺色）
+node tools/render_wallpaper.cjs wallpaper/wallpaper.html wallpaper/cpb-phone-dark.png 402 874 3
+node tools/render_wallpaper.cjs wallpaper/wallpaper.html wallpaper/cpb-desktop-dark.png 1440 900 2 desk
+```
+
+`render_wallpaper.cjs` 需要 Playwright。桌布頁面也提供 `window.__setTime(t)`，可以逐格錄成動態桌布。
+
 ## 說明
 
 教學用示意圖，不是臨床操作指引。流量、壓力與儲血槽液面都是簡化模型，各數值的來源與假設寫在每張圖下方的說明裡；實際設定依器材與各院體外循環常規。

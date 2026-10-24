@@ -5,6 +5,7 @@ const stage = document.querySelector(".cpb-stage");
 const svg = stage.querySelector("svg");
 const readout = document.querySelector("[data-readout]");
 const still = matchMedia("(prefers-reduced-motion: reduce)");
+const WALL = document.body.hasAttribute("data-wallpaper");
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const path = (points) => points.map(([x, y], index) => `${index ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join("");
@@ -297,7 +298,7 @@ function tick(now) {
   frame = visible && !settled ? requestAnimationFrame(tick) : 0;
 }
 const run = () => {
-  if (!frame && visible) {
+  if (!frame && visible && !WALL) {
     last = 0;
     frame = requestAnimationFrame(tick);
   }
@@ -413,3 +414,32 @@ placeNeedle(0);
 placeLevel(state.volume);
 describe();
 say();
+
+// ---------- wallpaper: the machine on bypass at full flow, every pump running; time set from outside ----------
+if (WALL) {
+  touring = false;
+  state.clamped = false;
+  state.vavd = true;
+  state.vacuum = M.VAVD_MMHG;
+  state.route = "both";
+  drive.knob = drive.target = Math.round(M.RPM_FULL / 10) * 10;
+  for (const [id, rpm] of Object.entries({ cardio: M.RPM.cardio, vent: M.RPM.vent, rootvent: M.RPM.rootvent, sucker: M.RPM.sucker })) byId[id].knob = byId[id].target = rpm;
+  state.volume = M.PRIME_ML - (arterialFlow() * 1000 * M.LAG_S) / 60;
+  const base = pumps.map((entry) => entry.phi);
+  window.__setTime = (t) => {
+    pumps.forEach((entry, index) => {
+      entry.phi = base[index] + entry.pump.dir * (entry.knob / 60) * Math.PI * 2 * t;
+      placeRotor(entry);
+      entry.pointer.setAttribute("d", pointer(entry.pump.knob, 6.65, 1.2, 3.9, entry.knob / 60));
+    });
+    placeVanes((drive.knob / 60 / 100) * Math.PI * 2 * t);
+    drive.pointer.setAttribute("d", pointer(D.drive.knob, 5.65, 1, 3.4, drive.knob / M.RPM_MAX));
+  };
+  window.__setTime(0);
+  placeNeedle(state.vacuum);
+  placeLevel(state.volume);
+  say();
+  const box = svg.getBBox();
+  const pad = 4;
+  svg.setAttribute("viewBox", `${box.x - pad} ${box.y - pad} ${box.width + pad * 2} ${box.height + pad * 2}`);
+}

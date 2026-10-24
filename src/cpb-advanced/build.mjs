@@ -1,6 +1,6 @@
 // Builds ../../cpb-advanced.html with the anatomy skill's kit (github.com/wheresryan22/anatomy, MIT).
 // Clone it to src/anatomy, or point ANATOMY_DIR at a copy, then: node src/cpb-advanced/build.mjs [--audit]
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import * as M from "./model.mjs";
@@ -945,6 +945,20 @@ const plate = k
   .replace(/<\/figure>$/, `${legend}</figure>`);
 const intro = `<header class="cpb-head"><p class="cpb-back"><a href="./">← 回到目錄</a></p><h1>人工心肺機：進階配置</h1><p>離心動脈泵、4:1 血液心麻痺液（順行與逆行）、上下腔靜脈雙插管、負壓輔助靜脈引流、主動脈根部減壓與血液濃縮器。右側標示板標出八條管路各自接在病人身上的位置。在圖上左右拖曳或用方向鍵調整離心泵轉速；K 夾管，C／R 心麻痺液與灌注方向，V／O／S 三個減壓與抽吸泵，A 負壓引流。</p></header>`;
 const body = intro + plate;
+// lock-screen wallpaper: the figure alone, every line in its colour, the machine running at full flow
+if (process.argv.includes("--wallpaper")) {
+  const light = process.argv.includes("--light");
+  const wall = `<style>${CSS}</style><div class="iso-stage cpb-stage cpb-wall">${svg}</div><div class="cpb-hidden"><span data-readout></span></div>`;
+  const name = join(process.env.CPB_WALL_DIR ?? join(HERE, "..", "..", "wallpaper"), light ? "wallpaper-light.html" : "wallpaper.html");
+  const html = k
+    .pageHtml({ title: "人工心肺機桌布", theme: light ? "light" : "dark", body: wall, script: kitScript() + LIVE, width: 402 })
+    .replace('<html lang="en">', '<html lang="zh-Hant">')
+    .replace('<body class="iso"', '<body class="iso cpb-soft" data-wallpaper');
+  mkdirSync(dirname(name), { recursive: true });
+  writeFileSync(name, html);
+  console.log("wrote", name);
+  process.exit(0);
+}
 const OUT = process.env.CPB_OUT ?? join(HERE, "..", "..", "cpb-advanced.html");
 const page = k
   .pageHtml({ title: "人工心肺機進階配置 · Advanced CPB circuit", theme: THEME, body: `<style>${CSS}</style>${body}`, script: kitScript() + LIVE, width: 1000 })

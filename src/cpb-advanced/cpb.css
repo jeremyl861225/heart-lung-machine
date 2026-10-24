@@ -65,3 +65,19 @@ svg[data-route="antegrade"] .cpb-limb-cs, svg[data-route="retrograde"] .cpb-limb
 .cpb-back { margin: 0 0 10px !important; font-size: 13px !important; }
 .cpb-back a { color: var(--anatomy-muted); text-decoration: none; }
 .cpb-back a:hover { text-decoration: underline; }
+/* lock-screen wallpaper: the figure alone under the clock */
+body[data-wallpaper] { margin: 0; background: var(--anatomy-paper); overflow: hidden; }
+body[data-wallpaper] .iso-page { width: 402px; height: 874px; max-width: none; margin: 0; padding: 0; position: relative; }
+body[data-wallpaper] .cpb-wall { position: absolute; left: 8px; right: 8px; top: 300px; bottom: 96px; display: flex; align-items: center; justify-content: center; }
+body[data-wallpaper] .cpb-wall svg.iso-svg { width: 100%; height: auto; max-height: 100%; margin: 0; }
+body[data-wallpaper] .cpb-hidden { display: none; }
+body[data-wallpaper].desk .iso-page { width: 1440px; height: 900px; }
+body[data-wallpaper].desk .cpb-wall { left: 180px; right: 180px; top: 64px; bottom: 120px; }
+/* soft palette for the wallpaper: one chroma, hues round the wheel; venous stays darker than arterial */
+.iso.cpb-soft {
+  --cpb-venous: oklch(0.45 0.13 15); --cpb-venous-shine: oklch(0.54 0.12 15); --cpb-venous-shade: oklch(0.37 0.11 15);
+  --cpb-arterial: oklch(0.63 0.15 27); --cpb-arterial-shine: oklch(0.72 0.12 27); --cpb-arterial-shade: oklch(0.53 0.15 27);
+  --cpb-cp: oklch(0.64 0.10 248); --cpb-cp-shine: oklch(0.73 0.08 248); --cpb-cp-shade: oklch(0.54 0.10 248);
+  --cpb-mix: oklch(0.58 0.12 350); --cpb-mix-shine: oklch(0.67 0.10 350); --cpb-mix-shade: oklch(0.49 0.12 350);
+  --cpb-uf: oklch(0.74 0.10 88); --cpb-uf-shine: oklch(0.82 0.08 88); --cpb-uf-shade: oklch(0.64 0.10 88);
+}

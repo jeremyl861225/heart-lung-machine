@@ -81,3 +81,31 @@ body[data-wallpaper].desk .cpb-wall { left: 180px; right: 180px; top: 64px; bott
   --cpb-mix: oklch(0.58 0.12 350); --cpb-mix-shine: oklch(0.67 0.10 350); --cpb-mix-shade: oklch(0.49 0.12 350);
   --cpb-uf: oklch(0.74 0.10 88); --cpb-uf-shine: oklch(0.82 0.08 88); --cpb-uf-shade: oklch(0.64 0.10 88);
 }
+/* wallpaper lines, as on the Prismaflex lock screen: pale tube, coloured rim, dashed flow mark; one lightness and chroma */
+.iso.cpb-soft {
+  --k-a: oklch(0.60 0.115 27);
+  --k-v: oklch(0.50 0.105 15);
+  --k-c: oklch(0.66 0.075 205);
+  --k-m: oklch(0.60 0.085 305);
+  --k-uf: oklch(0.72 0.095 82);
+  --k-water: oklch(0.64 0.085 152);
+  --k-gas: oklch(0.62 0.025 250);
+  --k-vac: oklch(0.58 0.08 262);
+}
+.cpb-soft .cpb-k-a { --k: var(--k-a); }
+.cpb-soft .cpb-k-v { --k: var(--k-v); }
+.cpb-soft .cpb-k-c { --k: var(--k-c); }
+.cpb-soft .cpb-k-m { --k: var(--k-m); }
+.cpb-soft .cpb-k-uf { --k: var(--k-uf); }
+.cpb-soft .cpb-k-water { --k: var(--k-water); }
+.cpb-soft .cpb-k-gas { --k: var(--k-gas); }
+.cpb-soft .cpb-k-vac { --k: var(--k-vac); }
+.cpb-soft [class*="cpb-k-"] .tb-body { fill: color-mix(in srgb, var(--k) 16%, var(--anatomy-paper)); }
+.cpb-soft [class*="cpb-k-"] .tb-shade { fill: color-mix(in srgb, var(--k) 30%, var(--anatomy-paper)); }
+.cpb-soft [class*="cpb-k-"] .tb-shine { fill: var(--anatomy-lit-top); }
+.cpb-soft [class*="cpb-k-"] .tb-edge { stroke: var(--k); }
+.cpb-flow { fill: none; stroke: none; vector-effect: none; }
+.cpb-soft .cpb-flow { stroke: var(--k); stroke-width: var(--w); stroke-linecap: round; stroke-dasharray: var(--da) var(--ga); stroke-dashoffset: calc(var(--t, 0) - var(--o, 0)); }
+.cpb-soft .cpb-blood > .iso-fill, .cpb-soft .cpb-blood > .iso-top { fill: color-mix(in srgb, var(--k-v) 70%, var(--anatomy-paper)); }
+.cpb-soft .cpb-blood > .iso-shade { fill: color-mix(in srgb, var(--k-v) 85%, var(--anatomy-paper)); }
+.cpb-soft .cpb-blood > .iso-shade[data-shade="0"] { fill: var(--k-v); }

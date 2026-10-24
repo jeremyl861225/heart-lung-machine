@@ -185,12 +185,24 @@ function padOn(name, hosts, point, outward, a, height, style = {}, { bias = 0.1,
   return { end: G.add3(point, G.mul3(axis, h)), axis, F, shape };
 }
 const ROUTES = {};
+// the wallpaper draws every line the Prismaflex way: a pale tube in its circuit's colour with a dashed flow mark down the middle
+const FLOW = process.argv.includes("--wallpaper");
+const kindOf = (name, cls) => (cls ? cls.split(" ")[0].replace("cpb-", "") : name.startsWith("hc.water") ? "water" : name.startsWith("gas.") ? "gas" : name.startsWith("vavd.") ? "vac" : "");
+const screenLength = (points) => points.reduce((sum, point, index) => (index ? sum + Math.hypot(...at(point).map((v, j) => v - at(points[index - 1])[j])) : 0), 0);
+function flowMark(route, part, r) {
+  const lead = screenLength(G.cut(route, 0, Math.max(0.001, part.from)));
+  const w = r * KS;
+  return `<path class="cpb-flow" style="--o:${lead.toFixed(2)};--w:${(w * 0.42).toFixed(2)};--da:${(w * 0.75).toFixed(2)};--ga:${(w * 2.25).toFixed(2)}" d="${k.pathOf(part.points.map(at))}"/>`;
+}
 function tubeItems(name, route, r, { tone = "hi", bias = 0, maxLength = 14, spacing = 1.2, owner, touch, limp = false, breaks = [], gaps = [], caps = true, rims, cls = "", ends = [true, true], into } = {}) {
   const id = nameFor(name);
   R.route(id, route, r, { owner: owner ?? id, touch, limp, gaps, rims, ends, piece: id.split(".")[0] });
   ROUTES[id] = route;
+  const kind = kindOf(name, cls);
+  const groupCls = [cls, kind && `cpb-k-${kind}`].filter(Boolean).join(" ");
   tubePieces(route, r, P, { maxLength, spacing, breaks, gaps, caps }).forEach((part, index) => {
-    const svg = cls ? `<g class="${cls}">${tubeSvg(part, { tone })}</g>` : tubeSvg(part, { tone });
+    const body = tubeSvg(part, { tone }) + (FLOW && kind ? flowMark(route, part, r) : "");
+    const svg = groupCls ? `<g class="${groupCls}">${body}</g>` : body;
     if (into && into.test(part)) into.items.push({ key: G.dot3(part.mid, V), svg, shapes: [A.tube(part.points, part.radii)] });
     else put(`${id}:${index}`, part.mid, svg, { bias, route: id, chunk: index, shapes: [A.tube(part.points, part.radii)] });
   });
